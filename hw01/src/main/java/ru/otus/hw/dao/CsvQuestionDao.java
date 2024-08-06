@@ -38,12 +38,11 @@ public class CsvQuestionDao implements QuestionDao {
         try (InputStream file = getClass().getClassLoader().getResourceAsStream(fileNameProvider);
              BufferedReader reader = new BufferedReader(new InputStreamReader(file))) {
 
-            List<QuestionDto> parse = new CsvToBeanBuilder(reader)
+            return new CsvToBeanBuilder(reader)
                     .withSkipLines(1)
                     .withType(QuestionDto.class)
                     .build()
                     .parse();
-            return parse;
 
         } catch (IOException e) {
             throw new QuestionReadException(e.getMessage());
