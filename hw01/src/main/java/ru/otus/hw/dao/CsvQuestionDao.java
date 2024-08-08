@@ -1,9 +1,5 @@
 package ru.otus.hw.dao;
 
-import com.opencsv.CSVReader;
-import com.opencsv.bean.ColumnPositionMappingStrategy;
-import com.opencsv.bean.ColumnPositionMappingStrategyBuilder;
-import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.RequiredArgsConstructor;
 import ru.otus.hw.config.TestFileNameProvider;
@@ -35,10 +31,11 @@ public class CsvQuestionDao implements QuestionDao {
     }
 
     private List<QuestionDto> getQuestionDtoList(String fileNameProvider) {
-        try (InputStream file = getClass().getClassLoader().getResourceAsStream(fileNameProvider);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(file))) {
+        try (InputStream questionsCsv = getClass().getClassLoader().getResourceAsStream(fileNameProvider);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(questionsCsv))) {
 
             return new CsvToBeanBuilder(reader)
+                    .withSeparator(';')
                     .withSkipLines(1)
                     .withType(QuestionDto.class)
                     .build()
